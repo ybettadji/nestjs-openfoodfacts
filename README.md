@@ -1,73 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Test technique Noticia x Younes
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is an api developed with the NestJs framework. 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This API will allow you (after importing the Open Food Facts database) to retrieve products from the Open Food Facts database based on the product code or the product name.
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Prerequisites
 
-```bash
-$ npm install
+- npm
+- Docker (https://docs.docker.com/get-docker/)
+- NodeJs (https://nodejs.org/en/)
+- NestJs (https://docs.nestjs.com/)
+# Installation
+
+## Database
+
+In the database-installation folder, build an image using the Dockerfile. (The dockerfile will download and decompress the dump of the open food facts database. This database is about 40 GB, so be sure to allocate enough space to your container)
+
+```
+docker build -t {IMAGE_NAME} .
 ```
 
-## Running the app
+Run the image (Here I match port 28496 of my local machine to port 27017 of my container. You are free to change it, just be aware that each change will have to be replicated in the .env file) :
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+docker run -d -p 28496:27017 {IMAGE_NAME}
 ```
 
-## Test
+Execute a bash in the created container :
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+docker exec -it {CONTAINER ID} bash
 ```
 
-## Support
+After that, execute the mongo-script present in the container.
+```
+./mongo-script.sh
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+## Application
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+In the root of the project, run the command 
 
-## License
+```
+npm i
+```
 
-Nest is [MIT licensed](LICENSE).
+Modify the variables in the .env file according to the port you specified when you launched the container
+
+By default, the application port is 3000 and the database port is 28496. If you want to keep the same configuration, the docker image must be launched by matching the port 27017 of the container to the port 28496 of your local machine
+
+
+When the dependencies have been installed, launch the application : 
+
+```
+nest start --watch
+```
+
+## API Documentation
+
+The documentation of the api has been made with Swagger. To access this documentation, launch the project,
+
+then go to the following url (be sure to replace the port by the one where you decided to launch the application) : 
+
+```
+http://127.0.0.1/{PORT}/api
+```
+
+
