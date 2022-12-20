@@ -1,7 +1,5 @@
 use openfoodfacts
 
-db.products.dropIndexes()
-
 db.products.createIndex({code: 1})
 
 db.products.createIndex({product_name: 1})

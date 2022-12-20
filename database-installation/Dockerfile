@@ -8,4 +8,4 @@ RUN apt-get update -yq \
 COPY ./mongo-script-index.js .
 COPY mongo-script.sh .
 
-RUN chmod u+x mongo-script.sh
+RUN chmod u+x mongo-script.sh \
