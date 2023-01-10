@@ -1,5 +1,3 @@
-# Test technique Noticia x Younes
-
 This project is an api developed with the NestJs framework. 
 
 This API will allow you (after importing the Open Food Facts database) to retrieve products from the Open Food Facts database based on the product code or the product name.
